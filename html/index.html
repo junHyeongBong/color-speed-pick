@@ -324,6 +324,9 @@
                 $('#timer').text('00:00.00'); // 타이머 초기화
                 clearInterval(timerInterval); // 타이머 중지
                 elapsedTime = 0; // 경과 시간 초기화
+                currentLevel = 1; // 레벨 1로 초기화
+                colorCount = 3; // 예시 수를 3개로 초기화
+                $('#level').text('LEVEL 1'); // 레벨 문구 초기화
             });
 
             // 공유하기 버튼 클릭 이벤트 핸들러
