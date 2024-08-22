@@ -128,24 +128,26 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
+            padding: 30px;
             border-radius: 8px;
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            font-size: 24px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            font-size: 28px;
             font-weight: bold;
             z-index: 1000;
+            width: 300px; /* 박스 너비 조정 */
+            text-align: center;
         }
 
         /* 버튼 스타일 */
         .result-button {
-            margin-top: 10px;
             padding: 10px 20px;
             font-size: 16px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin: 10px; /* 버튼 간 간격 */
         }
 
         #share-button {
@@ -160,11 +162,17 @@
         #restart-button {
             background-color: #28a745;
             color: white;
-            margin-left: 10px;
         }
 
         #restart-button:hover {
             background-color: #218838;
+        }
+
+        /* 버튼 컨테이너 스타일 */
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* 버튼을 양쪽으로 배치 */
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -178,13 +186,16 @@
         <div id="color-options"></div>
     </div>
     <div id="timer-result">
-        타이머 기록: <span id="final-time">00:00.00</span><br>
-        <button id="share-button" class="result-button">공유하기</button>
-        <button id="restart-button" class="result-button">다시하기</button>
+        타이머 기록: <span id="final-time">00:00.00</span>
+        <div class="button-container">
+            <button id="share-button" class="result-button">공유하기</button>
+            <button id="restart-button" class="result-button">다시하기</button>
+        </div>
     </div>
 
-    <!-- jQuery 라이브러리 로드 -->
+    <!-- jQuery 및 html2canvas 라이브러리 로드 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <script>
         $(document).ready(function() {
             let colorCount = 3; // 처음엔 3개의 예시로 시작
@@ -317,11 +328,16 @@
 
             // 공유하기 버튼 클릭 이벤트 핸들러
             $('#share-button').click(function() {
-                const timeText = $('#timer').text();
-                navigator.clipboard.writeText(`타이머 기록: ${timeText}`).then(function() {
-                    alert('타이머 기록이 클립보드에 복사되었습니다.');
-                }, function(err) {
-                    alert('타이머 기록을 복사하는 데 실패했습니다.');
+                html2canvas(document.body).then(function(canvas) {
+                    canvas.toBlob(function(blob) {
+                        navigator.clipboard.write([new ClipboardItem({'image/png': blob})])
+                            .then(function() {
+                                alert('스크린샷이 클립보드에 복사되었습니다.');
+                            })
+                            .catch(function(err) {
+                                alert('스크린샷을 클립보드에 복사하는 데 실패했습니다.');
+                            });
+                    });
                 });
             });
         });
