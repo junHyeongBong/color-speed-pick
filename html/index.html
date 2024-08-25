@@ -187,7 +187,7 @@
     </style>
 </head>
 <body>
-    <div id="level">LEVEL 1</div>
+    <div id="level">LEVEL 1 >>> LEVEL 28</div>
     <div id="timer">00:00.00</div>
     <button id="start-button">게임 시작</button>
     <div id="game-container">
@@ -285,7 +285,7 @@
                         currentLevel++;
                         maxLevel = Math.max(maxLevel, currentLevel);
                         colorCount++;
-                        $('#level').text(`LEVEL ${currentLevel}`);
+                        $('#level').text(`LEVEL ${currentLevel} >>> LEVEL 28`);
                         updateColors();
                     }
                 } else {
@@ -337,7 +337,7 @@
                 elapsedTime = 0; // 경과 시간 초기화
                 currentLevel = 1; // 레벨 1로 초기화
                 colorCount = 3; // 예시 수를 3개로 초기화
-                $('#level').text('LEVEL 1'); // 레벨 문구 초기화
+                $('#level').text('LEVEL 1 >>> LEVEL 28'); // 레벨 문구 초기화
             });
 
             // 공유하기 버튼 클릭 이벤트 핸들러
