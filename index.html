@@ -14,7 +14,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             text-align: center;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease; /* 배경색 변경 시 부드럽게 */
         }
 
         #start-button {
@@ -33,7 +33,7 @@
         }
 
         #game-container {
-            display: none;
+            display: none; /* 게임 컨테이너는 처음에 숨김 */
         }
 
         #level {
@@ -61,7 +61,7 @@
         .correct-color {
             width: 120px;
             height: 120px;
-            margin: 20px auto;
+            margin: 20px auto; /* 가운데 정렬 */
             border: 2px solid #000;
         }
 
@@ -136,51 +136,8 @@
             font-size: 28px;
             font-weight: bold;
             z-index: 1000;
-            width: 300px;
+            width: 300px; /* 박스 너비 조정 */
             text-align: center;
-        }
-
-        /* 모달창 스타일 */
-        #modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            z-index: 2000;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        /* 모달창 안의 재시작 버튼 */
-        #modal-restart-button {
-            display: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background-color: #28a745;
-            color: white;
-            margin-top: 20px;
-        }
-
-        #modal-restart-button:hover {
-            background-color: #218838;
-        }
-
-        /* 애드센스 배너 스타일 */
-        .adsense-banner {
-            margin-top: 20px;
-            background-color: #f1f1f1;
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ccc;
         }
 
         /* 버튼 스타일 */
@@ -191,7 +148,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin: 10px;
+            margin: 10px; /* 버튼 간 간격 */
         }
 
         #share-button {
@@ -215,16 +172,16 @@
         /* 버튼 컨테이너 스타일 */
         .button-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* 버튼을 양쪽으로 배치 */
             margin-top: 20px;
         }
 
         /* 예시 그림 영역 */
         #color-options-container {
-            border: 2px solid #ccc;
+            border: 2px solid #ccc; /* 외곽선 추가 */
             padding: 20px;
             margin-top: 20px;
-            display: inline-block;
+            display: inline-block; /* 컨테이너 크기를 내용에 맞게 조정 */
             background-color: #f9f9f9;
             border-radius: 10px;
         }
@@ -237,7 +194,7 @@
     <button id="start-button">게임 시작</button>
     <div id="game-container">
         <div id="correct-color" class="correct-color"></div>
-        <div id="color-options-container">
+        <div id="color-options-container"> <!-- 예시 그림 영역 추가 -->
             <div id="color-options"></div>
         </div>
     </div>
@@ -247,15 +204,6 @@
             <button id="share-button" class="result-button">공유하기</button>
             <button id="restart-button" class="result-button">다시하기</button>
         </div>
-    </div>
-
-    <!-- 모달창 -->
-    <div id="modal">
-        <div class="adsense-banner">
-            <!-- 여기에서 구글 애드센스 광고가 표시됩니다 -->
-            <p>영역</p>
-        </div>
-        <button id="modal-restart-button">재시작</button>
     </div>
 
     <!-- jQuery 및 html2canvas 라이브러리 로드 -->
@@ -328,11 +276,13 @@
                             next();
                         });
 
+                    // 레벨 20에 도달하면 타이머를 중지하고 결과 표시
                     if (currentLevel === 20) {
-                        clearInterval(timerInterval);
-                        $('#final-time').text($('#timer').text());
-                        $('#timer-result').show();
+                        clearInterval(timerInterval); // 타이머 중지
+                        $('#final-time').text($('#timer').text()); // 타이머 결과 표시
+                        $('#timer-result').show(); // 타이머 결과 박스 표시
                     } else {
+                        // 정답일 때의 동작
                         currentLevel++;
                         maxLevel = Math.max(maxLevel, currentLevel);
                         colorCount++;
@@ -348,11 +298,11 @@
                             next();
                         });
 
-                    // 모달창 표시 및 3초 타이머 시작
-                    $('#modal').fadeIn();
-                    setTimeout(function() {
-                        $('#modal-restart-button').show(); // 3초 후 재시작 버튼 표시
-                    }, 3000);
+                    // 오답일 때의 동작
+                    currentLevel = Math.max(1, currentLevel - 1); // 전 단계로 돌아가고 레벨을 1로 유지
+                    colorCount = Math.max(3, colorCount - 1); // 예시 수를 3개로 유지
+                    $('#level').text(`LEVEL ${currentLevel} >>> LEVEL 20`);
+                    updateColors(); // 색상을 새로 업데이트
                 }
             }
 
@@ -366,22 +316,20 @@
 
             // 게임 시작 함수
             function startGame() {
-                $('#start-button').hide();
-                $('#game-container').show();
-                $('#timer-result').hide();
-                updateColors();
-                elapsedTime = 0;
-                updateTimer();
-                startTimer();
+                $('#start-button').hide(); // 시작 버튼 숨기기
+                $('#game-container').show(); // 게임 컨테이너 표시
+                $('#timer-result').hide(); // 타이머 결과 박스 숨기기
+                updateColors(); // 색상 업데이트
+                elapsedTime = 0; // 경과 시간 초기화
+                updateTimer(); // 타이머 업데이트
+                startTimer(); // 타이머 시작
             }
 
             // 게임 시작 버튼 클릭 이벤트 핸들러
             $('#start-button').click(startGame);
 
             // 다시하기 버튼 클릭 이벤트 핸들러
-            $('#restart-button, #modal-restart-button').click(function() {
-                $('#modal').hide(); // 모달창 숨기기
-                $('#modal-restart-button').hide(); // 모달 재시작 버튼 숨기기
+            $('#restart-button').click(function() {
                 $('#timer-result').hide(); // 타이머 결과 박스 숨기기
                 $('#start-button').show(); // 게임 시작 버튼 표시
                 $('#game-container').hide(); // 게임 컨테이너 숨기기
@@ -396,10 +344,13 @@
             // 공유하기 버튼 클릭 이벤트 핸들러
             $('#share-button').click(function() {
                 html2canvas(document.body).then(function(canvas) {
+                    html2canvas(document.body).then(function(canvas) {
+                    // 캔버스를 이미지로 변환하여 다운로드
                     const link = document.createElement('a');
                     link.href = canvas.toDataURL('image/png');
                     link.download = 'game_screenshot.png';
                     link.click();
+                });
                 });
             });
         });
