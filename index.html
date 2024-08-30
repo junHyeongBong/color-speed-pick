@@ -340,19 +340,7 @@
                 colorCount = 3; // 예시 수를 3개로 초기화
                 $('#level').text('LEVEL 1 >>> LEVEL 20'); // 레벨 문구 초기화
             });
-
-            // 공유하기 버튼 클릭 이벤트 핸들러
-            $('#share-button').click(function() {
-                html2canvas(document.body).then(function(canvas) {
-                    html2canvas(document.body).then(function(canvas) {
-                    // 캔버스를 이미지로 변환하여 다운로드
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'game_screenshot.png';
-                    link.click();
-                });
-                });
-            });
+        
         });
     </script>
 </body>
